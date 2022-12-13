@@ -1,22 +1,22 @@
 "use strict";
 
-describe("Account Object tests", () => {
-    describe("Account creation", () => {
-        it("should successfully create an account instance", () => {
+describe("Account", () => {
+    describe("Account create", () => {
+        it("successfully create an account", () => {
             let account = new Account(12345);
             expect(account.toString()).to.eql("Account 12345: balance 0");
         });
     });
 })
 
-describe("Account Operation tests", () => {
+describe("Account Methods", () => {
 
     beforeEach(() => {
         this.account = new Account(12345);
     });
 
     describe("deposit", () => {
-        it("should successfully deposit an amount of money into the account", () => {
+        it("successfully deposit money", () => {
             const amount = 1000;
             this.account.deposit(amount);
             expect(this.account.getBalance()).to.eql(amount);
@@ -24,7 +24,7 @@ describe("Account Operation tests", () => {
     });
 
     describe("unsuccessful deposit for invalid amount", () => {
-        it("should not deposit into account if the amount is less than 0", () => {
+        it("not deposit in account if the amount is less than 0", () => {
             const amount = -1;
             expect(() => {
                 this.account.deposit(amount);
@@ -33,35 +33,32 @@ describe("Account Operation tests", () => {
     });
 
     describe("withdraw", () => {
-        it("should successfully withdraw a valid amount of money from the account", () => {
-            const amount = 1000;
-            this.account.deposit(amount);
-            this.account.withdraw(500);
-            expect(this.account.getBalance()).to.eql(500);
+        it("successfully withdraw money from account", () => {
+            this.account.deposit(1000);
+            this.account.withdraw(450);
+            expect(this.account.getBalance()).to.eql(550);
         });
     });
 
     describe("unsuccessful withdraw with insufficient balance", () => {
-        it("should not withdraw from the account if the balance is insufficient", () => {
-            const amount = 1000;
+        it("not withdraw from the account if the balance is insufficient", () => {
             expect(() => {
-                this.account.withdraw(amount);
+                this.account.withdraw(1000);
             }).to.throw(Error, "Insufficient funds");
         });
     });
 
     describe("unsuccessful withdraw for invalid amount", () => {
-        it("should not withdraw from the account if the amount is less than 0", () => {
-            const amount = -1;
+        it("not withdraw from the account if the amount is less than 0", () => {
             expect(() => {
-                this.account.withdraw(amount);
+                this.account.withdraw(-1);
             }).to.throw(RangeError, "Withdraw amount has to be greater than zero");
         });
     });
 });
 
-describe('Checking Account Test', () => {
-    it('should not withdraw if overdraft limit is exceeded', () => {
+describe('Checking Account', () => {
+    it('not withdraw if overdraft limit is exceeded', () => {
         let checkingAccount = new CheckingAccount(12345, 200);
         expect(() => {
             checkingAccount.withdraw(500);
@@ -69,17 +66,17 @@ describe('Checking Account Test', () => {
     });
 });
 
-describe('Bank Tests', () => {
+describe('Bank', () => {
 
     let bank;
     beforeEach(() => {
         bank = new Bank()
     });
-    describe('Account Actions', () => {
+    describe('Account Methods', () => {
 
         describe('Account Addition', () => {
             describe('Default Account', () => {
-                it('should successfully add a default Account', () => {
+                it('successfully add a default Account', () => {
                     bank.addAccount();
                     expect(bank.getAccounts().length).to.eql(1);
                     expect(bank.getAccounts()[0].getNumber()).to.eql(1);
@@ -87,7 +84,7 @@ describe('Bank Tests', () => {
             });
 
             describe('Savings Account', () => {
-                it('should successfully add a savings Account', () => {
+                it('successfully add a savings Account', () => {
                     bank.addSavingsAccount(5);
                     expect(bank.getAccounts().length).to.eql(1);
                     expect(bank.getAccounts()[0].getNumber()).to.eql(2);
@@ -96,7 +93,7 @@ describe('Bank Tests', () => {
             });
 
             describe('Checking Account', () => {
-                it('should successfully add a checking Account', () => {
+                it('successfully add a checking Account', () => {
                     bank.addCheckingAccount(200);
                     expect(bank.getAccounts().length).to.eql(1);
                     expect(bank.getAccounts()[0].getNumber()).to.eql(3);
@@ -106,7 +103,7 @@ describe('Bank Tests', () => {
         });
 
         describe('Account Closure', () => {
-            it('should successfully close an Account in the Bank', () => {
+            it('successfully close an Account in the Bank', () => {
                 bank.addCheckingAccount(200);
                 const accountToClose = bank.getAccounts()[0];
                 bank.closeAccount(4);
@@ -118,7 +115,7 @@ describe('Bank Tests', () => {
 
 
     describe('Account Report', () => {
-        it('should generate an account report for all bank accounts within the bank', () => {
+        it('generate an account report for all bank accounts within the bank', () => {
             bank.addSavingsAccount(5);
             bank.addSavingsAccount(10);
             bank.addCheckingAccount(300);
@@ -129,8 +126,8 @@ describe('Bank Tests', () => {
         });
     });
 
-    describe('End Of month test', () => {
-        it('should generate and endOfMonth Status by Performing needed actions at the end of the month', () => {
+    describe('End Of Month', () => {
+        it('generate and endOfMonth Status by Performing needed actions at the end of the month', () => {
             bank.addSavingsAccount(5);
             bank.addSavingsAccount(10);
             bank.addCheckingAccount(300);
